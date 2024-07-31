@@ -50,6 +50,26 @@ void save_free_log(Logical *v) {
   }
 }
 
+void save_free_num_sub(SubsetNumeric *v) {
+  if (!v)
+    return;
+  if (v->indices) {
+    free(v->indices);
+  }
+}
+
+void save_free_int_sub(SubsetInteger *v) {
+  if (v && v->indices) {
+    free(v->indices);
+  }
+}
+
+void save_free_log_sub(SubsetLogical *v) {
+  if (v && v->indices) {
+    free(v->indices);
+  }
+}
+
 void free_and_exit(VectorManager *vm, const char *message) {
   for (size_t i = 0; i < vm->n_vectors; i++) {
     save_free_num(&vm->numerics[i]);
@@ -77,6 +97,24 @@ void free_and_exit(VectorManager *vm, const char *message) {
   if (vm->tempNum) {
     save_free_num(vm->tempNum);
     free(vm->tempNum);
+  }
+  for (size_t i = 0; i < vm->nsub_vectors; i++) {
+    save_free_num_sub(&vm->numeric_subsets[i]);
+  }
+  for (size_t i = 0; i < vm->isub_vectors; i++) {
+    save_free_int_sub(&vm->integer_subsets[i]);
+  }
+  for (size_t i = 0; i < vm->lsub_vectors; i++) {
+    save_free_log_sub(&vm->logical_subsets[i]);
+  }
+  if (vm->numeric_subsets) {
+    free(vm->numeric_subsets);
+  }
+  if (vm->integer_subsets) {
+    free(vm->integer_subsets);
+  }
+  if (vm->logical_subsets) {
+    free(vm->logical_subsets);
   }
   fprintf(stderr, "%s\n", message);
   exit(EXIT_FAILURE);
@@ -110,6 +148,24 @@ void free_vm(VectorManager *vm) {
   if (vm->tempNum) {
     save_free_num(vm->tempNum);
     free(vm->tempNum);
+  }
+  for (size_t i = 0; i < vm->nsub_vectors; i++) {
+    save_free_num_sub(&vm->numeric_subsets[i]);
+  }
+  for (size_t i = 0; i < vm->isub_vectors; i++) {
+    save_free_int_sub(&vm->integer_subsets[i]);
+  }
+  for (size_t i = 0; i < vm->lsub_vectors; i++) {
+    save_free_log_sub(&vm->logical_subsets[i]);
+  }
+  if (vm->numeric_subsets) {
+    free(vm->numeric_subsets);
+  }
+  if (vm->integer_subsets) {
+    free(vm->integer_subsets);
+  }
+  if (vm->logical_subsets) {
+    free(vm->logical_subsets);
   }
 }
 

@@ -73,7 +73,7 @@ void add_logical_subsets(size_t n, VectorManager *vm) {
   }
 }
 
-// subset Numeric with scalar double
+// Subset Numeric with scalar double
 SubsetNumeric *s_n_w_d_s(size_t subset_vec_index, size_t vec_index, double idx,
                          VectorManager *vm) {
   vm->numeric_subsets[subset_vec_index].vec = &vm->numerics[vec_index];
@@ -90,7 +90,7 @@ SubsetNumeric *s_n_w_d_s(size_t subset_vec_index, size_t vec_index, double idx,
   return &vm->numeric_subsets[subset_vec_index];
 }
 
-// subset Numeric with a SubsetNumeric (a subset of Numeric with scalar double)
+// Subset Numeric with a SubsetNumeric (a subset of Numeric with scalar double)
 SubsetNumeric *s_n_w_s_n(size_t subset_vec_index, SubsetNumeric *sn,
                          VectorManager *vm) {
   size_t s = sn->size_indices;
