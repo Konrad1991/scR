@@ -268,7 +268,7 @@ void add_numerics_robjs(size_t n, VectorManager *vm) {
   vm->numerics_robjs = vectors;
   vm->n_vectors_robjs = n;
   for (size_t i = 0; i < n; i++) {
-    init_numeric(&(vm->numerics[i]));
+    init_numeric(&(vm->numerics_robjs[i]));
   }
 }
 
@@ -282,7 +282,7 @@ void add_integers_robjs(size_t n, VectorManager *vm) {
   vm->integers_robjs = vectors;
   vm->n_vectors_robjs = n;
   for (size_t i = 0; i < n; i++) {
-    init_integer(&(vm->integers[i]));
+    init_integer(&(vm->integers_robjs[i]));
   }
 }
 
@@ -296,7 +296,7 @@ void add_logicals_robjs(size_t n, VectorManager *vm) {
   vm->logicals_robjs = vectors;
   vm->n_vectors_robjs = n;
   for (size_t i = 0; i < n; i++) {
-    init_logical(&(vm->logicals[i]));
+    init_logical(&(vm->logicals_robjs[i]));
   }
 }
 
