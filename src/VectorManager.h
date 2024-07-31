@@ -37,28 +37,37 @@ typedef struct {
 } SubsetLogical;
 
 typedef struct {
-  // vectors
+  // Vectors
   Logical *logicals;
   Integer *integers;
   Numeric *numerics;
   size_t l_vectors;
   size_t i_vectors;
   size_t n_vectors;
-  // temporaries for storage
+  // Temporaries for storage
   Numeric *tempNum;
   Integer *tempInt;
   Logical *tempLog;
+  // R value objects
   // scalars
   double *scalarNums;
   int *scalarInts;
   bool *scalarLogs;
-  // subsets
+  // Vectors
+  Logical *logicals_robjs;
+  Integer *integers_robjs;
+  Numeric *numerics_robjs;
+  size_t l_vectors_robjs;
+  size_t i_vectors_robjs;
+  size_t n_vectors_robjs;
+  // Subsets
   SubsetLogical *logical_subsets;
   SubsetInteger *integer_subsets;
   SubsetNumeric *numeric_subsets;
   size_t lsub_vectors;
   size_t isub_vectors;
   size_t nsub_vectors;
+
 } VectorManager;
 
 VectorManager create_vm();
@@ -73,11 +82,18 @@ void add_numerics(size_t n, VectorManager *vm);
 void add_integers(size_t n, VectorManager *vm);
 void add_logicals(size_t n, VectorManager *vm);
 
+void add_numerics_robjs(size_t n, VectorManager *vm);
+void add_integers_robjs(size_t n, VectorManager *vm);
+void add_logicals_robjs(size_t n, VectorManager *vm);
+
 void alloc_numeric(size_t vec_index, size_t size, VectorManager *vm);
+void alloc_numeric_robjs(size_t vec_index, size_t size, VectorManager *vm);
 void alloc_temp_numeric(size_t size, VectorManager *vm);
 void alloc_integer(size_t vec_index, size_t size, VectorManager *vm);
+void alloc_integer_robjs(size_t vec_index, size_t size, VectorManager *vm);
 void alloc_temp_int(size_t size, VectorManager *vm);
 void alloc_logical(size_t vec_index, size_t size, VectorManager *vm);
+void alloc_logical_robjs(size_t vec_index, size_t size, VectorManager *vm);
 void alloc_temp_log(size_t size, VectorManager *vm);
 
 void init_numeric(Numeric *v);
