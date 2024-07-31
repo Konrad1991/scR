@@ -8,18 +8,20 @@
 // User would write v4 = v1 + v2[v3[2]] + 3.3
 void EXPR1(VectorManager *vm) {
 
-  add_numeric_subsets(2, vm);
-  s_n_w_s_n(1, s_n_w_d_s(1, 0, 3.0, vm), vm);
+  // Calculation of subset v2[v3[2]]
+  add_numeric_subsets(1, vm);
+  // v3 = 1:5; v2 = 6:10; v3[2] = 3; v2[3] = 9
+  s_n_w_s_n(0, 1, s_n_w_d_s(0, 2, 2.0, vm), vm);
 
-  int vars_in_expr[] = {0, 1};
-  int types_of_vars[] = {2, 2};
+  int vars_in_expr[] = {0, 0};
+  int types_of_vars[] = {2, 3};
   int nvars = 2;
   int var_left = 2;
   size_t s = determine_size(vm, vars_in_expr, types_of_vars, nvars);
   alloc_temp_numeric(s, vm);
   for (size_t i = 0; i < s; i++) {
     vm->tempNum->data[i] =
-        get_num(i, 0, vm) + get_num(i, 1, vm) + get_scalar_num(0, vm);
+        get_num(i, 0, vm) + get_num_sub(i, 0, vm) + get_scalar_num(0, vm);
   }
   if (s > vm->numerics[var_left].size) {
     alloc_numeric(var_left, s, vm);

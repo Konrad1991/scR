@@ -12,7 +12,7 @@ void add_integer_subsets(size_t n, VectorManager *vm);
 void add_logical_subsets(size_t n, VectorManager *vm);
 SubsetNumeric *s_n_w_d_s(size_t subset_vec_index, size_t vec_index, double idx,
                          VectorManager *vm);
-SubsetNumeric *s_n_w_s_n(size_t subset_vec_index, SubsetNumeric *sn,
-                         VectorManager *vm);
+SubsetNumeric *s_n_w_s_n(size_t subset_vec_index, size_t vec_index,
+                         SubsetNumeric *sn, VectorManager *vm);
 double get_num_sub(size_t index, size_t vec_index, VectorManager *vm);
 #endif

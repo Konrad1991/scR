@@ -91,8 +91,8 @@ SubsetNumeric *s_n_w_d_s(size_t subset_vec_index, size_t vec_index, double idx,
 }
 
 // Subset Numeric with a SubsetNumeric (a subset of Numeric with scalar double)
-SubsetNumeric *s_n_w_s_n(size_t subset_vec_index, SubsetNumeric *sn,
-                         VectorManager *vm) {
+SubsetNumeric *s_n_w_s_n(size_t subset_vec_index, size_t vec_index,
+                         SubsetNumeric *sn, VectorManager *vm) {
   size_t s = sn->size_indices;
   size_t *d = (size_t *)malloc(s * sizeof(size_t));
   if (!d) {
@@ -106,6 +106,7 @@ SubsetNumeric *s_n_w_s_n(size_t subset_vec_index, SubsetNumeric *sn,
   vm->numeric_subsets[subset_vec_index].indices = d;
   vm->numeric_subsets[subset_vec_index].size_indices = s;
   vm->numeric_subsets[subset_vec_index].vec = sn->vec;
+  vm->numeric_subsets[subset_vec_index].vec = &vm->numerics[vec_index];
   return &vm->numeric_subsets[subset_vec_index];
 }
 
@@ -113,7 +114,10 @@ double get_num_sub(size_t index, size_t vec_index, VectorManager *vm) {
   if (index >= vm->numeric_subsets[vec_index].vec->size || index < 0) {
     free_and_exit(vm, "Index out of bounds");
   }
+
   return vm->numeric_subsets[vec_index]
-      .vec->data[vm->numeric_subsets[vec_index].indices[index] %
-                 vm->numeric_subsets[vec_index].vec->size];
+      .vec
+      ->data[vm->numeric_subsets[vec_index]
+                 .indices[index % vm->numeric_subsets[vec_index].size_indices] %
+             vm->numeric_subsets[vec_index].vec->size];
 }
