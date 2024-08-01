@@ -26,9 +26,8 @@ void EXPR1(VectorManager *vm) {
     vm->tempNum->data[i] =
         // get_num(i, 0, vm) + get_num_sub(i, 0, vm) + get_scalar_num(0, vm);
         get_num(i, 0, vm) +
-        get_num_from_sub(
-            subset_nv_with_numSub(0, subset_nv_with_ns(2, 2.0, i, vm), i, vm)) +
-        get_scalar_num(0, vm);
+        subset_nv_with_ns(0, subset_nv_with_ns(2, 2.0, i, vm), i, vm) +
+        subset_nv_with_nv(0, 1, i, vm) + get_scalar_num(0, vm);
   }
   if (s > vm->numerics[var_left].size) {
     alloc_numeric(var_left, s, vm);

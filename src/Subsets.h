@@ -22,15 +22,10 @@ typedef struct {
   size_t index;
 } NumSub;
 
-NumSub subset_nv_with_nv(size_t subsetted_vec, size_t vec_in_brackets,
+double subset_nv_with_nv(size_t subsetted_vec, size_t vec_in_brackets,
                          size_t index, VectorManager *vm);
 
-NumSub subset_nv_with_numSub(size_t subsetted_vec, NumSub num_sub, size_t index,
-                             VectorManager *vm);
-
-NumSub subset_nv_with_ns(size_t subsetted_vec, double sub_index, size_t index,
+double subset_nv_with_ns(size_t subsetted_vec, double sub_index, size_t index,
                          VectorManager *vm);
-
-double get_num_from_sub(NumSub subset);
 
 #endif
