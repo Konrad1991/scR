@@ -13,6 +13,27 @@ void EXPR1(VectorManager *vm) {
   // v3 = 1:5; v2 = 6:10; v3[2] = 3; v2[3] = 9
   s_n_w_s_n(0, 1, s_n_w_d_s(0, 2, 2.0, vm), vm);
 
+  /*
+  Alternative for subsetting:
+    - Idea subset within for loop
+    - Subset structs like this:
+        struct SubsetNumeric {
+          Numeric* vec;
+          size_t index;
+        };
+    - subset functions return Subset structs:
+          struct SubsetNumeric 
+          subset_numeric_vec_with_numeric_vec(
+            size_t index_of_vector_which_is_subsetted,
+            size_t index_of_vector_within_brackets,
+            VectorManager* vm);
+    - to retrieve the underlying element:
+      get_num_sub(i, subset_numeric_vec_with_numeric_vec(...))
+  */
+
+  // add r obj
+  add_numerics_robjs(1, vm);
+
   int vars_in_expr[] = {0, 0};
   int types_of_vars[] = {2, 3};
   int nvars = 2;
