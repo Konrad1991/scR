@@ -13,24 +13,6 @@ void EXPR1(VectorManager *vm) {
   // v3 = 1:5; v2 = 6:10; v3[2] = 3; v2[3] = 9
   s_n_w_s_n(0, 1, s_n_w_d_s(0, 2, 2.0, vm), vm);
 
-  /*
-  Alternative for subsetting:
-    - Idea subset within for loop
-    - Subset structs like this:
-        struct SubsetNumeric {
-          Numeric* vec;
-          size_t index;
-        };
-    - subset functions return Subset structs:
-          struct SubsetNumeric 
-          subset_numeric_vec_with_numeric_vec(
-            size_t index_of_vector_which_is_subsetted,
-            size_t index_of_vector_within_brackets,
-            VectorManager* vm);
-    - to retrieve the underlying element:
-      get_num_sub(i, subset_numeric_vec_with_numeric_vec(...))
-  */
-
   // add r obj
   add_numerics_robjs(1, vm);
 
@@ -42,7 +24,11 @@ void EXPR1(VectorManager *vm) {
   alloc_temp_numeric(s, vm);
   for (size_t i = 0; i < s; i++) {
     vm->tempNum->data[i] =
-        get_num(i, 0, vm) + get_num_sub(i, 0, vm) + get_scalar_num(0, vm);
+        // get_num(i, 0, vm) + get_num_sub(i, 0, vm) + get_scalar_num(0, vm);
+        get_num(i, 0, vm) +
+        get_num_from_sub(
+            subset_nv_with_numSub(0, subset_nv_with_ns(2, 2.0, i, vm), i, vm)) +
+        get_scalar_num(0, vm);
   }
   if (s > vm->numerics[var_left].size) {
     alloc_numeric(var_left, s, vm);
