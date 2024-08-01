@@ -23,10 +23,23 @@ void EXPR1(VectorManager *vm) {
   size_t s = determine_size(vm, vars_in_expr, types_of_vars, nvars);
   alloc_temp_numeric(s, vm);
   for (size_t i = 0; i < s; i++) {
+    printf(
+        "Vec1: %f \t; Vec3[2]: %f \t; Vec2[Vec3[2]]: %f \t; Vec3[Vec1 + "
+        "Vec2]: %f \t; Vec1[Vec2]: %f \t; first scalar: %f\n",
+        get_num(i, 0, vm), subset_nv_with_ns(2, 2.0, i, vm),
+        subset_nv_with_ns(0, subset_nv_with_ns(2, 2.0, i, vm), i, vm),
+        subset_nv_with_ns(
+            0,
+            subset_nv_with_ns(2, get_num(i, 0, vm) * get_num(i, 1, vm), i, vm),
+            i, vm),
+        subset_nv_with_nv(0, 1, i, vm), get_scalar_num(0, vm));
     vm->tempNum->data[i] =
-        // get_num(i, 0, vm) + get_num_sub(i, 0, vm) + get_scalar_num(0, vm);
         get_num(i, 0, vm) +
         subset_nv_with_ns(0, subset_nv_with_ns(2, 2.0, i, vm), i, vm) +
+        subset_nv_with_ns(
+            0,
+            subset_nv_with_ns(2, get_num(i, 0, vm) * get_num(i, 1, vm), i, vm),
+            i, vm) +
         subset_nv_with_nv(0, 1, i, vm) + get_scalar_num(0, vm);
   }
   if (s > vm->numerics[var_left].size) {
