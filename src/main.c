@@ -8,6 +8,17 @@
 // User would write v4 = v1 + v2[v3[2]] + 3.3
 void EXPR1(VectorManager *vm) {
 
+  /*
+   For subsetting both approaches have to be used
+   if a user uses a vector for subsetting e.g. a[b]
+   and b has a length larger than a than this has to be considered
+   in the calculation of the size. As the size of a[b] is not the length of a
+   but rather the length of b.
+  So the variables within the brackets have to be examined first. The largest
+  element of the vector within the brackets has to be used for the calculation
+  of the size. Is this really correct?
+  How to veryify this?
+  */
   // Calculation of subset v2[v3[2]]
   add_numeric_subsets(1, vm);
   // v3 = 1:5; v2 = 6:10; v3[2] = 3; v2[3] = 9

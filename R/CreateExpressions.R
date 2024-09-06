@@ -30,5 +30,5 @@ void EXPR%s (VectorManager *vm) {
     deparse(expression, width.cutoff = 500),
     deparse(setter)
   )
-  cat(result)
+  return(result)
 }

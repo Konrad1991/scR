@@ -1,16 +1,16 @@
 # remove type annotation
-second_traverse <- function(code, env) {
+remove_type_annotation <- function(code, env) {
   if (!is.call(code)) {
     return(code)
   }
   code <- as.list(code)
   if (deparse(code[[1]]) == "::") {
     code <- code[[2]]
-    second_traverse(code, env)
+    remove_type_annotation(code, env)
   }
 
   lapply(code, function(x) {
-    second_traverse(x, env)
+    remove_type_annotation(x, env)
   })
 }
 
@@ -29,29 +29,29 @@ to_call <- function(ast) {
 }
 
 mod_and_gather <- function(code, env) {
-  ast <- second_traverse(code, env)
+  ast <- remove_type_annotation(code, env)
   to_call(ast)
 }
 
-# gather var on lhs
-third_traverse <- function(code, env) {
+# gather var on rhs
+gather_var_rhs <- function(code, env) {
   if (!is.call(code)) {
     return(code)
   }
-  if ((deparse(code[[1]]) == "<-") || (deparse(code[[1]]) == "<-")) {
+  if ((deparse(code[[1]]) == "<-") || (deparse(code[[1]]) == "=")) {
     env$vars <- all.vars(code[[3]])
     return()
   }
   code <- as.list(code)
   lapply(code, function(x) {
-    third_traverse(x, env)
+    gather_var_rhs(x, env)
   })
 }
 
 nvars_rhs <- function(code) {
   env <- new.env()
   env$vars <- NULL
-  third_traverse(code, env)
+  gather_var_rhs(code, env)
   return(length(env$vars))
 }
 
@@ -88,18 +88,18 @@ get_var_lhs <- function(code, symbol_table) {
 }
 
 # get all vars at rhs
-forth_traverse <- function(code) {
+gather_rhs <- function(code) {
   if (!is.call(code)) {
     return(code)
   }
-  if ((deparse(code[[1]]) == "<-") || (deparse(code[[1]]) == "<-")) {
+  if ((deparse(code[[1]]) == "<-") || (deparse(code[[1]]) == "=")) {
     return(code[[3]])
   }
   code <- as.list(code)
-  lapply(code, forth_traverse)
+  lapply(code, gather_rhs)
 }
 
-fith_traverse <- function(code, env) {
+extract_vars_from_rhs <- function(code, env) {
   if (!is.call(code)) {
     if (!(deparse(code) %in% permitted_fcts()) &&
       !rlang::is_scalar_double(code) &&
@@ -111,37 +111,28 @@ fith_traverse <- function(code, env) {
   }
   code <- as.list(code)
   lapply(code, function(x) {
-    fith_traverse(x, env)
+    extract_vars_from_rhs(x, env)
   })
 }
 
 get_all_vars_rhs <- function(code) {
   env <- new.env()
   env$vars <- NULL
-  code_rhs <- forth_traverse(code)
-  fith_traverse(code_rhs, env)
+  code_rhs <- gather_rhs(code)
+  extract_vars_from_rhs(code_rhs, env)
   return(env$vars)
 }
 
-
-# lhs subsetted?
-# sixth_traverse <- function(code, env) {
-#   if (!is.call(code)) {
-#     return(code)
-#   }
-#   if ((deparse(code[[1]]) == "<-") || (deparse(code[[1]]) == "<-")) {
-#     env$ls <- code[[2]]
-#     return()
-#   }
-#   code <- as.list(code)
-#   lapply(code, function(x) {
-#     sixth_traverse(x, env)
-#   })
-# }
-#
-# lhs_subsetted <- function(code) {
-#   env <- new.env()
-#   env$ls <- NULL
-#   sixth_traverse(code, env)
-#   return(env$ls)
-# }
+gather_expr <- function(env) {
+  env$EXPRESSIONS <- lapply(env$EXPRESSIONS, function(x) {
+    temp <- mod_and_gather(x, env)
+    temp <- unlist(temp)
+    temp <- list(
+      EXPR = temp,
+      var_left = get_var_lhs(temp, env$symbol_table),
+      variables = get_all_vars_rhs(temp),
+      nvars = nvars_rhs(temp)
+    )
+    return(Filter(function(x) length(x) >= 1, temp))
+  })
+}

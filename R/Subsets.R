@@ -204,20 +204,20 @@ identify_subsets <- function(f, symbol_table) {
   return(f)
 }
 
-f <- function() {
-  a <- c(1, 2)
-  b <- c(1, 2)
-  c <- c(1, 2)
-  d <- c[1]
-  d <- a[b[1L]]
-  d <- a[b[d[1]]]
-  return(d)
-}
-
-symbol_table <- data.frame(
-  ids = 1:4,
-  variables = c("a", "b", "c", "d"),
-  types = c("double_vector", "integer_vector", "double_vector", "double_vector")
-)
-
-identify_subsets(f, symbol_table)
+# f <- function() {
+#   a <- c(1, 2)
+#   b <- c(1, 2)
+#   c <- c(1, 2)
+#   d <- c[1]
+#   d <- a[b[1L]]
+#   d <- a[b[d[1]]]
+#   return(d)
+# }
+#
+# symbol_table <- data.frame(
+#   ids = 1:4,
+#   variables = c("a", "b", "c", "d"),
+#   types = c("double_vector", "integer_vector", "double_vector", "double_vector")
+# )
+#
+# identify_subsets(f, symbol_table)

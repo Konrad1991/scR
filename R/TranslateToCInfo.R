@@ -134,3 +134,39 @@ type_to_num <- function(type) {
     df[df$types == x, "number"]
   }))
 }
+
+create_code <- function(env) {
+  result <- list()
+  for (i in seq_along(env$EXPRESSIONS)) {
+    x <- env$EXPRESSIONS[[i]]
+    env$EXPRESSIONS[[i]]$EXPR <- replace_vars(
+      x$EXPR,
+      x$variables, env$symbol_table
+    )
+    env$EXPRESSIONS[[i]]$variables <-
+      env$symbol_table[
+        which(env$symbol_table$variables %in% unlist(x$variables)),
+        "ids"
+      ] - 1
+    env$EXPRESSIONS[[i]]$types <-
+      type_to_num(env$symbol_table[
+        which(env$symbol_table$variables %in% unlist(x$variables)),
+        "types"
+      ])
+    env$EXPRESSIONS[[i]]$var_left$type <- type_to_num(
+      env$EXPRESSIONS[[i]]$var_left$type
+    )
+    env$EXPRESSIONS[[i]]$var_left$setter <- create_setter(
+      env$EXPRESSIONS[[i]]$var_left$var_idx + 1, env$symbol_table
+    )
+
+    temp <- env$EXPRESSIONS[[i]]
+    result[[i]] <- create_expr(
+      as.character(i),
+      temp$variables, temp$types, temp$nvars,
+      temp$var_left$var_idx, temp$var_left$setter,
+      temp$EXPR
+    )
+  }
+  return(result)
+}

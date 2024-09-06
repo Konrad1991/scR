@@ -1,0 +1,17 @@
+Package: scR
+Type: Package
+Title: Pointer to SEXP object
+Version: 0.1
+Date: 2024-08-23
+Author: Krämer Konrad [aut, cre]
+Maintainer: Krämer Konrad <konrad_kraemer@yahoo.de>
+BugReports: https://github.com/Konrad1991/scR
+URL: https://github.com/Konrad1991/scR
+Description: Defining a R like language which is static typed and compiled. Basically it is a transpiler to C. 
+License: GPL-3
+Imports: Rcpp (>= 1.0.4), R6, inline
+LinkingTo: Rcpp (>= 1.0.4)
+VignetteBuilder: knitr
+Suggests: knitr, kableExtra, rmarkdown
+Encoding: UTF-8
+RoxygenNote: 7.3.1

@@ -1,6 +1,3 @@
-source("Utils.R")
-
-
 check_expr <- function(code) {
   if (grepl("EXPR", deparse(code)) || grepl("VAR", deparse(code)) ||
     grepl("SUBSET", deparse(code))) {
@@ -53,7 +50,7 @@ save_expressions <- function(code, env) {
   }
 }
 
-first_traverse <- function(code, env) {
+gather_vars_types <- function(code, env) {
   if (!is.call(code)) {
     return(code)
   }
@@ -73,7 +70,7 @@ first_traverse <- function(code, env) {
   }
 
   lapply(code, function(x) {
-    first_traverse(x, env)
+    gather_vars_types(x, env)
   })
 }
 
@@ -98,4 +95,22 @@ assemble_symbol_table <- function(variables, variable_type_pairs,
   ), 2]
   df[is.na(df$types), "types"] <- "double_vector"
   return(df)
+}
+
+create_symbol_table <- function(env, f) {
+  env$prohibited_functions <- prohibited_functions()
+  env$permitted_fcts <- permitted_fcts()
+  env$permitted_types <- permitted_types()
+
+  env$EXPRESSIONS <- list()
+  b <- body(f)[2:length(body(f))]
+  env$symbols <- list()
+  env$types <- data.frame(name = NULL, type = NULL)
+  ast <- list()
+  for (i in seq_along(b)) {
+    ast[[i]] <- gather_vars_types(b[[i]], env)
+  }
+  symbol_table <- assemble_symbol_table(env$symbols, env$types)
+  env$symbol_table <- symbol_table
+  return(symbol_table)
 }
