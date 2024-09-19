@@ -15,7 +15,7 @@ save_type <- function(code, env) {
         data.frame(name = deparse(code[[2]]), type = quote("ForLoop"))
       )
   }
-  if (deparse(code[[1]]) == "::") {
+  if (deparse(code[[1]]) == "%type%") {
     if (deparse(code[[3]]) %in% env$permitted_types) {
       env$types <-
         rbind(

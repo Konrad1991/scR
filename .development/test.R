@@ -1,11 +1,13 @@
 f <- function() {
-  a::integer <- 1L
+  a %type% integer <- 1L
   a <- a + 1 + b * a + c
   # b <- b + b
 }
 library(scR)
-# res <- traverse(f)
-# trash <- lapply(res, cat)
+res <- traverse(f)
+trash <- lapply(res, cat)
+
+stop()
 
 get_ast <- function(code) {
   if (!is.call(code)) {
