@@ -1,7 +1,7 @@
 f <- function() {
   a %type% integer <- 1L
   a <- a + 1 + b * a + c
-  # b <- b + b
+  b <- b + b
 }
 library(scR)
 res <- traverse(f)
