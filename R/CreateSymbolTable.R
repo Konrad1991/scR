@@ -77,8 +77,8 @@ gather_vars_types <- function(code, env) {
 
 assemble_symbol_table <- function(variables, variable_type_pairs,
                                   constants_num, constants_int, constants_log) {
-  if (length(unique(variable_type_pairs$name))
-  != length(variable_type_pairs$name)) {
+  if (length(unique(variable_type_pairs$name)) !=
+    length(variable_type_pairs$name)) {
     temp <- unique(variable_type_pairs$name)
     for (i in seq_along(temp)) {
       if (length(which(temp[[i]] == variable_type_pairs$name)) > 1) {
@@ -87,7 +87,7 @@ assemble_symbol_table <- function(variables, variable_type_pairs,
     }
   }
   vars <- unique(variables)
-  ids <- seq_along(vars)
+  ids <- seq_along(vars) - 1
   df <- data.frame(ids = ids, variables = unlist(vars))
   df$types <- variable_type_pairs[match(
     df$variables,

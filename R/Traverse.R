@@ -10,4 +10,3 @@ traverse <- function(f) {
   # create code
   create_code(e)
 }
-
